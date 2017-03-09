@@ -1,4 +1,4 @@
-package com.example.jiwoonwon.jsontest;
+package com.jiwoon.tgwing.mapsns;
 
 import android.os.AsyncTask;
 import android.util.Log;
