@@ -3,5 +3,5 @@
     android:shape="rectangle">
     <corners android:radius="5dp"/>
     <solid android:color="#ffffff"/>
-
+    <!-- Shadow : elevation 속성으로 구현 -->
 </shape>

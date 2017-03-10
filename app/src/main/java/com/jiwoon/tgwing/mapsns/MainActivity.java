@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -130,5 +131,11 @@ public class MainActivity extends AppCompatActivity {
     public void setCurrentLocation(double lat, double lng) {
         // 내 위치로 이동
         daumMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat, lng), true);
+    }
+
+    // Custom font 적용
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }
