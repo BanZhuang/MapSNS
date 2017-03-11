@@ -28,5 +28,6 @@ public class CustomFont extends Application {
     }
 
     를 모든 엑티비티 마지막에 추가 (or BaseAcvity 생성해서 상속)
+
     */
 }
