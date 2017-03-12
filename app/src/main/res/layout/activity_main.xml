@@ -1,78 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
-    <FrameLayout
+    <!-- fragment -->
+    <RelativeLayout
+        android:id="@+id/activity_main_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </RelativeLayout>
 
-        <!-- 다음 map -->
-        <RelativeLayout
-            android:id="@+id/daum_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <!-- Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:weightSum="3"
+        android:background="#E8E8E8">
 
-        <!-- 상위 네비게이션 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_gravity="top"
-            android:layout_margin="4dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <FrameLayout
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="4dp">
-                <ImageView
-                    android:id="@+id/activity_main_current_location"
-                    android:layout_width="54dp"
-                    android:layout_height="54dp"
-                    android:src="@drawable/icon_current_location_empty"/>
-            </FrameLayout>
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/menu_home_checked"
+                android:layout_margin="8dp"/>
+        </FrameLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:layout_marginTop="-2dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/box_rounded_white"
-                android:elevation="8dp">
-                <!-- TODO:검색바 만들기 -->
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:src="@drawable/icon_search"/>
-                <EditText
-                    android:id="@+id/activity_main_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="장소, 주소, 근처 검색"
-                    android:background="@null"
-                    android:textSize="14dp"
-                    android:textColor="@color/editTextNull"/>
-            </LinearLayout>
-
-            <FrameLayout
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="4dp">
-                <ImageView
-                    android:layout_width="54dp"
-                    android:layout_height="54dp"
-                    android:src="@drawable/icon_main_listview"/>
-            </FrameLayout>
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/menu_create_memo_empty"
+                android:layout_margin="8dp"/>
+        </FrameLayout>
 
-        </LinearLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/menu_profile_empty"
+                android:layout_margin="8dp"/>
+        </FrameLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

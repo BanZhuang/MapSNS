@@ -30,4 +30,5 @@ dependencies {
     compile 'com.tsengvn:Typekit:1.0.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/libDaumMapAndroid.jar')
+    compile 'com.android.support:support-v4:25.2.0'
 }
