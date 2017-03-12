@@ -117,18 +117,13 @@ public class MapFragment extends Fragment {
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
 
-        searchText = (EditText) view.findViewById(R.id.activity_main_search);
+        searchText = (EditText) view.findViewById(R.id.fragment_map_main_search);
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if(searchText == null) {
-//                    searchText.setTextColor(ContextCompat.getColor(getContext(), R.color.editTextNull));
-//                } else {
-//                    searchText.setTextColor(ContextCompat.getColor(getContext(), R.color.editTextNotNull));
-//                }
             }
             @Override
             public void afterTextChanged(Editable s) {
