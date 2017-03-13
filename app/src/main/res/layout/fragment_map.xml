@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 다음 map -->
+    <RelativeLayout
+        android:id="@+id/daum_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!-- 상위 네비게이션 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_gravity="top"
+        android:layout_margin="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="4dp">
+            <ImageView
+                android:id="@+id/fragment_map_current_location"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/icon_current_location_empty"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:layout_marginTop="-2dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/box_rounded_white"
+            android:elevation="8dp">
+            <!-- TODO:검색바 만들기 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:padding="10dp"
+                android:src="@drawable/icon_search"/>
+            <EditText
+                android:id="@+id/fragment_map_main_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:hint="장소, 주소, 근처 검색"
+                android:background="@null"
+                android:textSize="14dp"
+                android:textColorHint="@color/editTextNull"
+                android:textColor="@color/editTextNotNull"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp">
+            <ImageView
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/icon_main_listview"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
+
+</LinearLayout>
