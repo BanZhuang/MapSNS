@@ -3,6 +3,8 @@ package com.jiwoon.tgwing.mapsns;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -40,6 +43,9 @@ public class MapFragment extends Fragment {
 
     public LocationManager locationManager;
     public MapView daumMap;
+
+    public ImageView buttonCurrentLocation;
+    public static int toggleCurrentLocation = 0;
     public EditText searchText;
 
     @Override
@@ -51,6 +57,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapViewContainer = (ViewGroup) view.findViewById(R.id.daum_map);
+        final UserInfo userInfo = new UserInfo();
 
         // ACCESS_FINE_LOCATION 권한허가 (Using TedPermission Library)
         PermissionListener permissionListener = new PermissionListener() {
@@ -82,6 +89,8 @@ public class MapFragment extends Fragment {
                         Log.d(TAG, "latitude : " + latitude + ", longitude : " + longitude);
                         // 중심점 설정, 핀 가져오기
                         setCurrentLocation(latitude, longitude);
+                        userInfo.setLatitude(latitude);
+                        userInfo.setLongitude(longitude);
                     }
 
                     @Override
@@ -118,6 +127,41 @@ public class MapFragment extends Fragment {
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
 
+        buttonCurrentLocation = (ImageView) view.findViewById(R.id.fragment_map_current_location);
+        buttonCurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(toggleCurrentLocation == 0) {
+                    Bitmap imageChecked = BitmapFactory.decodeResource(getResources(), R.drawable.icon_current_location_checked);
+                    buttonCurrentLocation.setImageBitmap(imageChecked);
+
+                    if (daumMap.findPOIItemByTag(0) != null) {
+                        MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
+                        daumMap.removePOIItem(pastLocation);
+                    }
+
+                    MapPOIItem currentLocationMarker = new MapPOIItem();
+                    currentLocationMarker.setItemName("");
+                    currentLocationMarker.setTag(0);
+                    currentLocationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(userInfo.getLatitude(), userInfo.getLongitude()));
+                    currentLocationMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+                    currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
+                    currentLocationMarker.setCustomImageAutoscale(false);
+                    daumMap.addPOIItem(currentLocationMarker);
+
+                    toggleCurrentLocation = 1;
+                } else {
+                    Bitmap imageEmpty = BitmapFactory.decodeResource(getResources(), R.drawable.icon_current_location_empty);
+                    buttonCurrentLocation.setImageBitmap(imageEmpty);
+
+                    MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
+                    daumMap.removePOIItem(pastLocation);
+
+                    toggleCurrentLocation = 0;
+                }
+            }
+        });
+
         searchText = (EditText) view.findViewById(R.id.fragment_map_main_search);
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -139,18 +183,5 @@ public class MapFragment extends Fragment {
     public void setCurrentLocation(double lat, double lng) {
         // 내 위치로 이동
         daumMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat, lng), true);
-        if (daumMap.findPOIItemByTag(0) != null) {
-            MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
-            daumMap.removePOIItem(pastLocation);
-        }
-
-        MapPOIItem currentLocationMarker = new MapPOIItem();
-        currentLocationMarker.setItemName("");
-        currentLocationMarker.setTag(0);
-        currentLocationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(lat, lng));
-        currentLocationMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-        currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
-        currentLocationMarker.setCustomImageAutoscale(false);
-        daumMap.addPOIItem(currentLocationMarker);
     }
 }
