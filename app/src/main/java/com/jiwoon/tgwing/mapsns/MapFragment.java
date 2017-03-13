@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
@@ -124,6 +125,7 @@ public class MapFragment extends Fragment {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -137,5 +139,18 @@ public class MapFragment extends Fragment {
     public void setCurrentLocation(double lat, double lng) {
         // 내 위치로 이동
         daumMap.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat, lng), true);
+        if (daumMap.findPOIItemByTag(0) != null) {
+            MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
+            daumMap.removePOIItem(pastLocation);
+        }
+
+        MapPOIItem currentLocationMarker = new MapPOIItem();
+        currentLocationMarker.setItemName("");
+        currentLocationMarker.setTag(0);
+        currentLocationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(lat, lng));
+        currentLocationMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+        currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
+        currentLocationMarker.setCustomImageAutoscale(false);
+        daumMap.addPOIItem(currentLocationMarker);
     }
 }
