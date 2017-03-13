@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Custom font 적용
+    // Custom font 적용 (각 Activity 마다 복붙해줘야함)
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
