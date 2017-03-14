@@ -46,8 +46,8 @@ public class MapFragment extends Fragment {
     public MapView daumMap;
 
     public ImageView buttonCurrentLocation;
-    public static int toggleCurrentLocation = 0;
-    public static int callCurrentLocation = 0;
+    private int toggleCurrentLocation = 0;
+    private int callCurrentLocation = 0;
     public EditText searchText;
 
     @Override
