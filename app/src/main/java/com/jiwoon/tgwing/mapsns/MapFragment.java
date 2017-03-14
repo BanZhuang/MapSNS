@@ -47,6 +47,7 @@ public class MapFragment extends Fragment {
 
     public ImageView buttonCurrentLocation;
     public static int toggleCurrentLocation = 0;
+    public static int callCurrentLocation = 0;
     public EditText searchText;
 
     @Override
@@ -91,6 +92,13 @@ public class MapFragment extends Fragment {
                         // 중심점 설정, 핀 가져오기
                         mUserInfo.setLatitude(latitude);
                         mUserInfo.setLongitude(longitude);
+
+                        if (callCurrentLocation == 0) {
+                            setCurrentLocation(latitude, longitude);
+                            callCurrentLocation = 1;
+                            Log.d(TAG, "Moved to Current Location");
+                        }
+
                         if (toggleCurrentLocation != 0) {
                             showMyLocation();
                         }
