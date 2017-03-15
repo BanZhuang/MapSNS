@@ -146,6 +146,7 @@ public class MapFragment extends Fragment {
                     showMyLocation();
 
                     toggleCurrentLocation = 1;
+                    Log.d(TAG, "toggleCurrentLocation : " + toggleCurrentLocation);
                 } else {
                     Bitmap imageEmpty = BitmapFactory.decodeResource(getResources(), R.drawable.icon_current_location_empty);
                     buttonCurrentLocation.setImageBitmap(imageEmpty);

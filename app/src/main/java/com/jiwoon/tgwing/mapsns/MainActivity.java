@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -43,7 +44,14 @@ public class MainActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, newFragment)
+                        .addToBackStack(null)
                         .commit();
+
+                // 백그라운드 날려버리기
+                if(fragmentManager.getBackStackEntryCount()>=0) {
+                    fragmentManager.popBackStack();
+                    Log.d(TAG, "background popped");
+                }
             }
         });
 
