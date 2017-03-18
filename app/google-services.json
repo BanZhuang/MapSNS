@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "235541498055",
+    "firebase_url": "https://mpasns-f94a6.firebaseio.com",
+    "project_id": "mpasns-f94a6",
+    "storage_bucket": "mpasns-f94a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235541498055:android:118cf982c6cdddd7",
+        "android_client_info": {
+          "package_name": "com.jiwoon.tgwing.mapsns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235541498055-4hrdtfveg9uddhg1nj97q7v13mu5eclg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN0yqpPxPM1Ngz84UO7Jwiumgb1oXkSqM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

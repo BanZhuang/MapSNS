@@ -186,17 +186,22 @@ public class MapFragment extends Fragment {
         Bitmap imageChecked = BitmapFactory.decodeResource(getResources(), R.drawable.icon_current_location_checked);
         buttonCurrentLocation.setImageBitmap(imageChecked);
 
+        // TODO: setCurrentLocation 이벤트가 있음..! 요거로 코드 바꿔주기 ㅂㄷㅂㄷ
         if (daumMap.findPOIItemByTag(0) != null) {
             MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
             daumMap.removePOIItem(pastLocation);
         }
+
+        Bitmap currentLocation = BitmapFactory.decodeResource(getResources(), R.drawable.icon_current_location);
+        Bitmap resizeCurLocation = Bitmap.createScaledBitmap(currentLocation, (int)(currentLocation.getWidth()*0.18),
+                (int)(currentLocation.getHeight()*0.18), true);
 
         MapPOIItem currentLocationMarker = new MapPOIItem();
         currentLocationMarker.setItemName("");
         currentLocationMarker.setTag(0);
         currentLocationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(mUserInfo.getLatitude(), mUserInfo.getLongitude()));
         currentLocationMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-        currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
+        currentLocationMarker.setCustomImageBitmap(resizeCurLocation);
         currentLocationMarker.setCustomImageAutoscale(false);
         daumMap.addPOIItem(currentLocationMarker);
 
