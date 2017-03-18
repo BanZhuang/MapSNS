@@ -40,13 +40,18 @@ public class LoginActivity extends AppCompatActivity{
         if(mAccessToken != null) {
             //TODO: 다른 정보가 존재하면 MainActivity에, 없으면 RegisterActivity에
             Log.d(TAG, "User ID : " + mAccessToken.getUserId() + " / Permissions : " + mAccessToken.getPermissions());
-
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 //TODO: 다른 정보가 존재하면 MainActivity에, 없으면 RegisterActivity에
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
