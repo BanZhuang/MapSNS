@@ -15,13 +15,14 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private int navTag = 0;
 
     public ImageView buttonNavigationMap;
     public ImageView buttonCreateMemo;
     public ImageView buttonProfile;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -40,12 +41,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 프레그먼트 교체하기
-                Fragment newFragment = new MapFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, newFragment)
-                        .addToBackStack(null)
-                        .commit();
+                if(navTag != 0) {
+                    Fragment newFragment = new MapFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, newFragment)
+                            .addToBackStack(null)
+                            .commit();
+                    navTag = 0;
+                }
 
                 // 백그라운드 날려버리기
                 if(fragmentManager.getBackStackEntryCount()>=0) {
@@ -59,7 +63,17 @@ public class MainActivity extends AppCompatActivity {
         buttonCreateMemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                if(navTag != 1) {
 
+                    navTag = 1;
+                }
+
+                // 백그라운드 날려버리기
+                if(fragmentManager.getBackStackEntryCount()>=0) {
+                    fragmentManager.popBackStack();
+                    Log.d(TAG, "background popped");
+                }
             }
         });
 
@@ -67,7 +81,17 @@ public class MainActivity extends AppCompatActivity {
         buttonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                if(navTag != 2) {
 
+                    navTag = 2;
+                }
+
+                // 백그라운드 날려버리기
+                if(fragmentManager.getBackStackEntryCount()>=0) {
+                    fragmentManager.popBackStack();
+                    Log.d(TAG, "background popped");
+                }
             }
         });
     }
