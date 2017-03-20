@@ -1,4 +1,4 @@
-package com.jiwoon.tgwing.mapsns;
+package com.jiwoon.tgwing.mapsns.utils;
 
 import android.os.AsyncTask;
 import android.util.Log;

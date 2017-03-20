@@ -1,15 +1,16 @@
-package com.jiwoon.tgwing.mapsns;
+package com.jiwoon.tgwing.mapsns.activities;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.jiwoon.tgwing.mapsns.fragments.MapFragment;
+import com.jiwoon.tgwing.mapsns.R;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.jiwoon.tgwing.mapsns;
+package com.jiwoon.tgwing.mapsns.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.jiwoon.tgwing.mapsns.R;
 
 import java.util.Arrays;
 
@@ -23,7 +24,7 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity{
 
-    public static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginActivity";
 
     private CallbackManager mCallbackManager;
     private AccessToken mAccessToken;
@@ -38,9 +39,8 @@ public class LoginActivity extends AppCompatActivity{
         mAccessToken = AccessToken.getCurrentAccessToken();
         Log.d(TAG, "AccessToken : " + mAccessToken);
         if(mAccessToken != null) {
-            //TODO: 다른 정보가 존재하면 MainActivity에, 없으면 RegisterActivity에
             Log.d(TAG, "User ID : " + mAccessToken.getUserId() + " / Permissions : " + mAccessToken.getPermissions());
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
             finish();
         }
@@ -48,8 +48,8 @@ public class LoginActivity extends AppCompatActivity{
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                //TODO: 다른 정보가 존재하면 MainActivity에, 없으면 RegisterActivity에
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
-                        Arrays.asList("public_profile", "user_friends"));
+                        Arrays.asList("public_profile", "email", "user_friends"));
             }
         });
     }

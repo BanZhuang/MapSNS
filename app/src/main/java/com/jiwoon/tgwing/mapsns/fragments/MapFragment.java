@@ -1,4 +1,4 @@
-package com.jiwoon.tgwing.mapsns;
+package com.jiwoon.tgwing.mapsns.fragments;
 
 import android.Manifest;
 import android.content.Context;
@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.jiwoon.tgwing.mapsns.R;
+import com.jiwoon.tgwing.mapsns.models.UserInfo;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
