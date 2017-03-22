@@ -1,7 +1,6 @@
-package com.jiwoon.tgwing.mapsns;
+package com.jiwoon.tgwing.mapsns.utils;
 
 import android.app.Application;
-import android.os.Bundle;
 
 import com.tsengvn.typekit.Typekit;
 
