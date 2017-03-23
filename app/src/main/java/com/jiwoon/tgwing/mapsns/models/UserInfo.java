@@ -1,4 +1,4 @@
-package com.jiwoon.tgwing.mapsns;
+package com.jiwoon.tgwing.mapsns.models;
 
 import java.util.UUID;
 
