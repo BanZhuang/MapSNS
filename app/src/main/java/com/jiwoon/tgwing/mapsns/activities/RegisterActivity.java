@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -19,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.singletons.UserLab;
 import com.jiwoon.tgwing.mapsns.networks.UserNetwork;
 import com.tsengvn.typekit.TypekitContextWrapper;
@@ -38,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         Log.d(TAG, "accessToken: " + accessToken);
@@ -87,10 +91,28 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                 } else {
                     //User Signed out
-
+                    Toast.makeText(RegisterActivity.this, "User Signed out", Toast.LENGTH_SHORT).show();
                 }
             }
         };
+
+        ViewGroup buttonStart = (ViewGroup) findViewById(R.id.button_start);
+        buttonStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText mUsernameEditText = (EditText) findViewById(R.id.activity_register_username);
+                final EditText mAgeEditText = (EditText) findViewById(R.id.activity_register_age);
+
+                String userId = mFirebaseUser.getUid();
+                String userName = mUsernameEditText.getText().toString();
+                String age = mAgeEditText.getText().toString();
+
+                // TODO: Facebook에서 userFriend 목록 가져오기
+                //String[] userFriends;
+
+                //UserNetwork.setUserInfoToFirebase(userId, userName, age, userFriends);
+            }
+        });
     }
 
     private void updateUI() {
