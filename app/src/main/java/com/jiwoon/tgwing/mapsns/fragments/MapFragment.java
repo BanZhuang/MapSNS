@@ -25,6 +25,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.UserInfo;
+import com.jiwoon.tgwing.mapsns.singletons.UserLab;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -61,7 +62,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapViewContainer = (ViewGroup) view.findViewById(R.id.daum_map);
-        mUserInfo = new UserInfo();
+        mUserInfo = UserLab.getInstance().getUserInfo();
 
         // ACCESS_FINE_LOCATION 권한허가 (Using TedPermission Library)
         PermissionListener permissionListener = new PermissionListener() {

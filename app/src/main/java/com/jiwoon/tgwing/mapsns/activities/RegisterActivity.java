@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.jiwoon.tgwing.mapsns.R;
+import com.jiwoon.tgwing.mapsns.models.UserInfo;
 import com.jiwoon.tgwing.mapsns.singletons.UserLab;
 import com.jiwoon.tgwing.mapsns.networks.UserNetwork;
 import com.tsengvn.typekit.TypekitContextWrapper;
@@ -38,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mFirebaseUser;
+    private UserInfo mUserInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         Log.d(TAG, "accessToken: " + accessToken);
         mAuth = FirebaseAuth.getInstance();
+        mUserInfo = UserLab.getInstance().getUserInfo();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -71,15 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
                                     Log.d(TAG, "Existing User is Found");
                                     userExists = true;
                                     UserLab.getInstance(existingUserID);
-                                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    moveToMainActivity();
                                 }
                             }
 
                             if (userExists == false) {
                                 Log.d(TAG, "Existing User is not Found");
-                                updateUI();
                             }
 
                         }
@@ -102,21 +102,24 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final EditText mUsernameEditText = (EditText) findViewById(R.id.activity_register_username);
                 final EditText mAgeEditText = (EditText) findViewById(R.id.activity_register_age);
+                mUsernameEditText.setText(mUserInfo.getName());
 
+                String userEmail = mUserInfo.getMail();
                 String userId = mFirebaseUser.getUid();
                 String userName = mUsernameEditText.getText().toString();
                 String age = mAgeEditText.getText().toString();
+                String[] userFollowing = {}; //비어있는 Array 생성
 
-                // TODO: Facebook에서 userFriend 목록 가져오기
-                //String[] userFriends;
-
-                //UserNetwork.setUserInfoToFirebase(userId, userName, age, userFriends);
+                UserNetwork.setUserInfoToFirebase(userEmail, userId, userName, age, userFollowing);
+                moveToMainActivity();
             }
         });
     }
 
-    private void updateUI() {
-
+    private void moveToMainActivity() {
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

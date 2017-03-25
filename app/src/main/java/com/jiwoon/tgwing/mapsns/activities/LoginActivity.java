@@ -11,10 +11,18 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.jiwoon.tgwing.mapsns.R;
+import com.jiwoon.tgwing.mapsns.models.UserInfo;
+import com.jiwoon.tgwing.mapsns.singletons.UserLab;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -28,6 +36,7 @@ public class LoginActivity extends AppCompatActivity{
 
     private CallbackManager mCallbackManager;
     private AccessToken mAccessToken;
+    private UserInfo mUserInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,7 @@ public class LoginActivity extends AppCompatActivity{
 
         //FacebookSdk.sdkInitialize(this.getApplicationContext()); <- 이제는 자동으로 선언되서 필요없음
         mCallbackManager = CallbackManager.Factory.create();
+        mUserInfo = UserLab.getInstance().getUserInfo();
 
         mAccessToken = AccessToken.getCurrentAccessToken();
         Log.d(TAG, "AccessToken : " + mAccessToken);
@@ -49,6 +59,33 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                Profile profile = Profile.getCurrentProfile();
+
+                //Facebook에서 Email 가져오기
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.v(TAG,"response : " + response.toString());
+
+                        try {
+                            String userName = object.getString("name");
+                            String userEmail = object.getString("email");
+
+                            //싱글톤에 이름,메일 저장
+                            mUserInfo.setName(userName);
+                            mUserInfo.setMail(userEmail);
+                            Log.v("Email = ", " " + userEmail);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id, name, email");
+                request.setParameters(parameters);
+                request.executeAsync();
+
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 finish();
@@ -56,6 +93,7 @@ public class LoginActivity extends AppCompatActivity{
 
             @Override
             public void onCancel() {
+                LoginManager.getInstance().logOut();
                 Toast.makeText(LoginActivity.this, "Facebook Login has Canceled", Toast.LENGTH_SHORT).show();
             }
 

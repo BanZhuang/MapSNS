@@ -2,9 +2,15 @@ package com.jiwoon.tgwing.mapsns.singletons;
 
 import android.util.Log;
 
+import com.jiwoon.tgwing.mapsns.models.UserInfo;
+
+import java.util.List;
+
 public class UserLab {
     private static final String TAG = UserLab.class.getSimpleName();
     private static UserLab sUserLab;
+
+    private UserInfo mUserInfo;
     private String mUserId;
 
     private UserLab(String userId) {
@@ -20,6 +26,10 @@ public class UserLab {
             sUserLab = new UserLab(userId);
         }
         return sUserLab;
+    }
+
+    public UserInfo getUserInfo() {
+        return mUserInfo;
     }
 
     public String getUserId() {
