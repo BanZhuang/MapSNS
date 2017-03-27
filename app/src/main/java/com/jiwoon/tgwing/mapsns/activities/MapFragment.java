@@ -193,7 +193,7 @@ public class MapFragment extends Fragment {
 
         MapPOIItem currentLocationMarker = new MapPOIItem();
         currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
-        currentLocationMarker.setCustomImageAnchorPointOffset(new MapPOIItem.ImageOffset(18,21));
+        currentLocationMarker.setCustomImageAnchorPointOffset(new MapPOIItem.ImageOffset(36,39));
 
         daumMap.setCustomCurrentLocationMarkerTrackingImage(currentLocationMarker.getCustomImageResourceId(),
                 currentLocationMarker.getCustomImageAnchorPointOffset());
