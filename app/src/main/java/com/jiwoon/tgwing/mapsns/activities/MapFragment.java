@@ -26,6 +26,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.User;
 
+import net.daum.mf.map.api.MapCurrentLocationMarker;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -153,8 +154,10 @@ public class MapFragment extends Fragment {
                     Bitmap imageEmpty = BitmapFactory.decodeResource(getResources(), R.drawable.icon_current_location_empty);
                     buttonCurrentLocation.setImageBitmap(imageEmpty);
 
-                    MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
-                    daumMap.removePOIItem(pastLocation);
+//                    MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
+//                    daumMap.removePOIItem(pastLocation);
+                    daumMap.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+                    daumMap.setShowCurrentLocationMarker(false);
 
                     toggleCurrentLocation = 0;
                 }
@@ -188,19 +191,14 @@ public class MapFragment extends Fragment {
         Bitmap imageChecked = BitmapFactory.decodeResource(getResources(), R.drawable.icon_current_location_checked);
         buttonCurrentLocation.setImageBitmap(imageChecked);
 
-        if (daumMap.findPOIItemByTag(0) != null) {
-            MapPOIItem pastLocation = daumMap.findPOIItemByTag(0);
-            daumMap.removePOIItem(pastLocation);
-        }
-
         MapPOIItem currentLocationMarker = new MapPOIItem();
-        currentLocationMarker.setItemName("");
-        currentLocationMarker.setTag(0);
-        currentLocationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(mUser.getLatitude(), mUser.getLongitude()));
-        currentLocationMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
         currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
-        currentLocationMarker.setCustomImageAutoscale(false);
-        daumMap.addPOIItem(currentLocationMarker);
+        currentLocationMarker.setCustomImageAnchorPointOffset(new MapPOIItem.ImageOffset(18,21));
+
+        daumMap.setCustomCurrentLocationMarkerTrackingImage(currentLocationMarker.getCustomImageResourceId(),
+                currentLocationMarker.getCustomImageAnchorPointOffset());
+        daumMap.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
+        daumMap.setShowCurrentLocationMarker(true);
 
         setCurrentLocation(mUser.getLatitude(), mUser.getLongitude());
     }
