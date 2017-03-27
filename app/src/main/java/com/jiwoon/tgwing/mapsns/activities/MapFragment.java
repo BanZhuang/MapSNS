@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.jiwoon.tgwing.mapsns.R;
-import com.jiwoon.tgwing.mapsns.models.UserInfo;
+import com.jiwoon.tgwing.mapsns.models.User;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -42,7 +42,7 @@ public class MapFragment extends Fragment {
     private static final String API_KEY = "7d21acf9557f38468561eff63f87ce8e";
 
     private ViewGroup mapViewContainer;
-    private UserInfo mUserInfo;
+    private User mUser;
 
     public LocationManager locationManager;
     public MapView daumMap;
@@ -55,14 +55,13 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapViewContainer = (ViewGroup) view.findViewById(R.id.daum_map);
-        mUserInfo = new UserInfo();
+        mUser = User.getInstance();
 
         // ACCESS_FINE_LOCATION 권한허가 (Using TedPermission Library)
         PermissionListener permissionListener = new PermissionListener() {
@@ -93,8 +92,8 @@ public class MapFragment extends Fragment {
                         double longitude = location.getLongitude();
                         Log.d(TAG, "latitude : " + latitude + ", longitude : " + longitude);
                         // 중심점 설정, 핀 가져오기
-                        mUserInfo.setLatitude(latitude);
-                        mUserInfo.setLongitude(longitude);
+                        mUser.setLatitude(latitude);
+                        mUser.setLongitude(longitude);
 
                         if (callCurrentLocation == 0) {
                             setCurrentLocation(latitude, longitude);
@@ -197,12 +196,12 @@ public class MapFragment extends Fragment {
         MapPOIItem currentLocationMarker = new MapPOIItem();
         currentLocationMarker.setItemName("");
         currentLocationMarker.setTag(0);
-        currentLocationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(mUserInfo.getLatitude(), mUserInfo.getLongitude()));
+        currentLocationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(mUser.getLatitude(), mUser.getLongitude()));
         currentLocationMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
         currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
         currentLocationMarker.setCustomImageAutoscale(false);
         daumMap.addPOIItem(currentLocationMarker);
 
-        setCurrentLocation(mUserInfo.getLatitude(), mUserInfo.getLongitude());
+        setCurrentLocation(mUser.getLatitude(), mUser.getLongitude());
     }
 }

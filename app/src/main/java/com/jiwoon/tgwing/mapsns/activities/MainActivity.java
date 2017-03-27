@@ -28,16 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initFragment();
 
-
-       // Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
-      //  if(fragment == null) {
-      //      fragment = new MapFragment();
-      //      fm.beginTransaction()
-      //              .add(R.id.fragment_container, fragment)
-      //              .commit();
-      //  }
-
         buttonNavigationMap = (ImageView) findViewById(R.id.navigation_map);
         buttonNavigationMap.setOnClickListener(new View.OnClickListener() {
             @Override

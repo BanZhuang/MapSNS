@@ -20,6 +20,9 @@ android {
 }
 
 dependencies {
+    repositories {
+        mavenCentral()
+    }
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -31,4 +34,14 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/libDaumMapAndroid.jar')
     compile 'com.android.support:support-v4:25.2.0'
+
+    // firebase
+    compile 'com.google.firebase:firebase-core:10.0.1'      //Analytics
+    compile 'com.google.firebase:firebase-database:10.0.1'  //실시간 데이터베이스
+    compile 'com.google.firebase:firebase-storage:10.0.1'   //저장소
+
+    // facebook
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 }
+//google
+apply plugin: 'com.google.gms.google-services'
