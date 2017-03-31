@@ -85,6 +85,7 @@ public class User {
         Longitude = longitude;
     }
 
+    // 싱글톤 날리기
     public void initiateUser() {
         sUser = null;
     }

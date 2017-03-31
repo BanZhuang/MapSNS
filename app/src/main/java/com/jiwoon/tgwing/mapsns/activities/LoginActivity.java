@@ -1,5 +1,6 @@
 package com.jiwoon.tgwing.mapsns.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.User;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,10 +33,10 @@ public class LoginActivity extends AppCompatActivity{
 
     private static final String TAG = "LoginActivity";
     private User mUser;
+
     //Facebook
     private AccessToken accessToken;
     private CallbackManager mCallbackManager;
-    //Firebase
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,9 +48,10 @@ public class LoginActivity extends AppCompatActivity{
 
         if(accessToken != null) {
             mUser = User.getInstance(accessToken.getUserId());
-            //TODO::firebase DB 체크해서 유저정보 있는지 확인
+            //TODO: firebase DB 체크해서 유저정보 있는지 확인
                 //User정보 있으면 User모델에 정보 파싱하고 MainActivity로
                 //없으면 Register로
+            //TODO: 임시로 선언, 나중에 삭제하기!
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -76,7 +79,10 @@ public class LoginActivity extends AppCompatActivity{
                                     Log.d(TAG, "facebook login : " + "id: " + mUser.getUserId() +
                                             ", name: " + mUser.getUserName() + ", email: " + mUser.getUserEmail());
 
-                                    //RegisterActivity로!
+                                    //TODO: RegisterActivity로!
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -129,11 +135,15 @@ public class LoginActivity extends AppCompatActivity{
         Log.d(TAG, "onStop");
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d(TAG, "onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
 }
