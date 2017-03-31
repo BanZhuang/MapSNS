@@ -12,21 +12,19 @@ public class User {
 
     private static String sUserId;
     private String mUserName;
+
+    private String mUserEmail;
     private String mAge;
     private String[] mFollowers;
     private String[] mFollowings;
     private double Latitude;
     private double Longitude;
 
-    private User() {} //TODO: LoginActivity 구현하고 이 생성자 삭제
     private User(String userId) {
         sUserId = userId;
     }
 
     public static User getInstance() {
-        if(sUser == null) {
-            sUser = new User();
-        } //TODO: LoginActivity 구현하고 이 생성자 삭제
         return sUser;
     }
 
@@ -36,12 +34,20 @@ public class User {
         }
         return sUser;
     }
+    public String getUserId() { return sUserId; }
 
     public String getUserName() {
         return mUserName;
     }
     public void setUserName(String userName) {
         mUserName = userName;
+    }
+
+    public String getUserEmail() {
+        return mUserEmail;
+    }
+    public void setUserEmail(String userEmail) {
+        mUserEmail = userEmail;
     }
 
     public String getAge() {
