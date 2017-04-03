@@ -37,6 +37,7 @@ dependencies {
 
     // firebase
     compile 'com.google.firebase:firebase-core:10.0.1'      //Analytics
+    compile 'com.google.firebase:firebase-auth:10.0.1'      //Authentication
     compile 'com.google.firebase:firebase-database:10.0.1'  //실시간 데이터베이스
     compile 'com.google.firebase:firebase-storage:10.0.1'   //저장소
 

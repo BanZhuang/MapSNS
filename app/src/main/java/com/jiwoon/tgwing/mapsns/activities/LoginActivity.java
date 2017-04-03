@@ -15,6 +15,7 @@ import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.User;
 import com.tsengvn.typekit.TypekitContextWrapper;
@@ -41,18 +42,13 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         mCallbackManager = CallbackManager.Factory.create();
         accessToken = AccessToken.getCurrentAccessToken();
         Log.d(TAG, "AccessToken : " + accessToken);
 
         if(accessToken != null) {
             mUser = User.getInstance(accessToken.getUserId());
-            //TODO: firebase DB 체크해서 유저정보 있는지 확인
-                //User정보 있으면 User모델에 정보 파싱하고 MainActivity로
-                //없으면 Register로
-            //TODO: 임시로 선언, 나중에 삭제하기!
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
             finish();
         }
@@ -72,15 +68,14 @@ public class LoginActivity extends AppCompatActivity{
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 try {
                                     //sUser에 id값 저장, 객체 선언
-                                    mUser = User.getInstance(object.getString("id"));
+                                    mUser = User.getInstance(accessToken.getUserId());
                                     mUser.setUserName(object.getString("lastname") + object.getString("firstname"));  //이름
                                     mUser.setUserEmail(object.getString("email"));//이메일
 
                                     Log.d(TAG, "facebook login : " + "id: " + mUser.getUserId() +
                                             ", name: " + mUser.getUserName() + ", email: " + mUser.getUserEmail());
 
-                                    //TODO: RegisterActivity로!
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                                     startActivity(intent);
                                     finish();
                                 } catch (Exception e) {

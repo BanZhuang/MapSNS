@@ -10,13 +10,13 @@ public class User {
     // userName, age, profile, follower, following, latitude, longitude
     private static User sUser; //User 객체를 싱글톤으로 사용
 
-    private static String sUserId;
+    private static String sUserId;  // Facebook ID
     private String mUserName;
 
     private String mUserEmail;
     private String mAge;
-    private String[] mFollowers;
-    private String[] mFollowings;
+    private String mFollowers;
+    private String mFollowings;
     private double Latitude;
     private double Longitude;
 
@@ -57,17 +57,17 @@ public class User {
         mAge = age;
     }
 
-    public String[] getFollowers() {
+    public String getFollowers() {
         return mFollowers;
     }
-    public void setFollowers(String[] followers) {
+    public void setFollowers(String followers) {
         mFollowers = followers;
     }
 
-    public String[] getFollowings() {
+    public String getFollowings() {
         return mFollowings;
     }
-    public void setFollowings(String[] followings) {
+    public void setFollowings(String followings) {
         mFollowings = followings;
     }
 
@@ -83,6 +83,10 @@ public class User {
     }
     public void setLongitude(double longitude) {
         Longitude = longitude;
+    }
+
+    public void setUserInfo(String userName, String userEmail, String age, String followers, String followings) {
+        mUserName = userName; mUserEmail = userEmail; mAge = age; mFollowers = followers; mFollowings = followings;
     }
 
     // 싱글톤 날리기
