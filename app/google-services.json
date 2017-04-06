@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "235541498055-hk9m15bgap58tauiuq1at736av83j5up.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jiwoon.tgwing.mapsns",
+            "certificate_hash": "154bb44d2bf30883422d6c6bc3c6786ef201c94b"
+          }
+        },
+        {
           "client_id": "235541498055-4hrdtfveg9uddhg1nj97q7v13mu5eclg.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235541498055-4hrdtfveg9uddhg1nj97q7v13mu5eclg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
