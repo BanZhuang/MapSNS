@@ -68,7 +68,7 @@ public class MapFragment extends Fragment {
         PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Permission Granted");
 
                 // 다음지도 불러오기
                 daumMap = new MapView(getActivity());

@@ -66,26 +66,32 @@ public class LoginActivity extends BaseActivity {
                     User mUser = User.getInstance(mFirebaseUser.getUid());
 
                     UserNetwork.getDataFromFirebase(mUser.getUserId());
-                    if(mUser.getAge() != "") {
-                        Log.d(TAG, "User Info Exist : " + mUser.getUserName());
+                    if(mUser.getAge() != null) {
+                        if(mUser.getAge().length() > 0) {
+                            Log.d(TAG, "User Info Exist : " + mUser.getUserName());
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Log.d(TAG, "User Info Not Fully Exist : " + mUser.getUserName());
+
+                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        Log.d(TAG, "User Info Not Exist");
+                        getUserInfoFromFacebook();
+
+                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                         startActivity(intent);
                         finish();
                     }
-
-                    Log.d(TAG, "User Info Not Exist");
-                    getUserInfoFromFacebook();
-
-                    //TODO: MainActivity 대신 RegisterActivity로!
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
                 }
                 else {
                     Log.d(TAG, "LogOut");
                 }
-
             }
         };
 

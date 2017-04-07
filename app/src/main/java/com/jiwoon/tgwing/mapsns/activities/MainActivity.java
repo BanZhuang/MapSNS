@@ -3,7 +3,6 @@ package com.jiwoon.tgwing.mapsns.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import com.jiwoon.tgwing.mapsns.R;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     public ImageView buttonCreateMemo;
     public ImageView buttonProfile;
 
-    private MapFragment     mapFragment;
+    private MapFragment mapFragment;
     private FragmentManager fragmentManager;
 
     @Override
@@ -70,12 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager.beginTransaction().replace(R.id.fragment_container,mapFragment).commit();
         // TODO: 2017. 3. 22. 다른 프래그먼트도 이니셜라이즈 하고 한번만 생성하고 사용하게 버튼누를때마다 생성하면 x.
-    }
-
-    // Custom font 적용 (각 Activity 마다 복붙해줘야함)
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
 }

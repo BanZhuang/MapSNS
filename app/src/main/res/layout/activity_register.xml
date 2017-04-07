@@ -22,24 +22,44 @@
         android:layout_marginRight="56dp"
         android:layout_gravity="center">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textColor="#264b9b"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
         <EditText
             android:id="@+id/activity_register_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="이름"/>
+            android:layout_marginBottom="8dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이메일"
+            android:textColor="#264b9b"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
         <EditText
             android:id="@+id/activity_register_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="이메일"/>
+            android:layout_marginBottom="8dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="나이"
+            android:textColor="#264b9b"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
         <EditText
             android:id="@+id/activity_register_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:hint="나이"/>
+            android:inputType="phone"/>
 
     </LinearLayout>
 
@@ -48,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="시작하기"
+        android:textStyle="bold"
         android:background="#C4DAF0"
         android:layout_gravity="center_horizontal|bottom"/>
 
