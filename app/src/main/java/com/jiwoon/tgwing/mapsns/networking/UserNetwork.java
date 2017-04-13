@@ -15,6 +15,7 @@ public class UserNetwork extends DatabaseNetwork {
     private static final String TAG = "UserNetwork";
 
     public static final String FIREBASE_USERS = "users";
+    public static Boolean GET_FIREBASE_DATA;
 
     // Firebase로 유저DB 저장
     // 데이터 순서 : UserID (FirebaseUser Uid), UserName, Email, Age, Followers, Followings
@@ -47,6 +48,8 @@ public class UserNetwork extends DatabaseNetwork {
     }
 
     public static void getDataFromFirebase(final String userID) {
+        GET_FIREBASE_DATA = false;
+
         UserNetwork.sDatabase.child(UserNetwork.FIREBASE_USERS).child(userID).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -66,6 +69,8 @@ public class UserNetwork extends DatabaseNetwork {
 
                             User.getInstance(userID).setUserInfo(userName, email, age, followers, followings);
                             Log.d(TAG, "userName : " + User.getInstance(userID).getUserName());
+
+                            GET_FIREBASE_DATA = true;
                         } catch (Exception e) {
                             Log.e(TAG, "data not fully exist");
                         }

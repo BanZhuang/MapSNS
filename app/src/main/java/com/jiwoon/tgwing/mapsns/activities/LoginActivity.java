@@ -65,28 +65,36 @@ public class LoginActivity extends BaseActivity {
                     Log.d(TAG, "LogIn : " + mFirebaseUser.getUid());
                     User mUser = User.getInstance(mFirebaseUser.getUid());
 
+                    // TODO: 2017. 4. 7. UserNetwork는 비동기적으로 작동한다 그래서 체크하는 코드 추가!
                     UserNetwork.getDataFromFirebase(mUser.getUserId());
-                    if(mUser.getAge() != null) {
-                        if(mUser.getAge().length() > 0) {
-                            Log.d(TAG, "User Info Exist : " + mUser.getUserName());
+                    while(true) {
+                        // 비동기 코드를 동기화, 좀 더 효율적으로 바꿔야함..
+                        if(UserNetwork.GET_FIREBASE_DATA) {
+                            if(mUser.getAge() != null) {
+                                if(mUser.getAge().length() > 0) {
+                                    Log.d(TAG, "User Info Exist : " + mUser.getUserName());
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Log.d(TAG, "User Info Not Fully Exist : " + mUser.getUserName());
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Log.d(TAG, "User Info Not Fully Exist : " + mUser.getUserName());
 
-                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                            startActivity(intent);
-                            finish();
+                                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            } else {
+                                Log.d(TAG, "User Info Not Exist");
+                                getUserInfoFromFacebook();
+
+                                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            break;
                         }
-                    } else {
-                        Log.d(TAG, "User Info Not Exist");
-                        getUserInfoFromFacebook();
-
-                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                        startActivity(intent);
-                        finish();
                     }
                 }
                 else {
