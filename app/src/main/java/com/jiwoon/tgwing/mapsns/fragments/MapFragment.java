@@ -1,4 +1,4 @@
-package com.jiwoon.tgwing.mapsns.activities;
+package com.jiwoon.tgwing.mapsns.fragments;
 
 import android.Manifest;
 import android.content.Context;

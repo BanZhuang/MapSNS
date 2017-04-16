@@ -26,6 +26,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.User;
 import com.jiwoon.tgwing.mapsns.networking.UserNetwork;
@@ -42,6 +45,9 @@ public class LoginActivity extends BaseActivity {
     public FirebaseAuth mFirebaseAuth;
     public FirebaseAuth.AuthStateListener mFirebaseAuthListener;
     private FirebaseUser mFirebaseUser;
+    // User Info
+    private User mUser;
+    private String userID;
     // Facebook
     private LoginButton mSigninFacebookButton;
     private CallbackManager mFacebookCallbackManager;
@@ -59,77 +65,98 @@ public class LoginActivity extends BaseActivity {
         mFirebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                mFirebaseAuth = firebaseAuth;
                 mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
                 if (mFirebaseUser != null) {
-                    Log.d(TAG, "LogIn : " + mFirebaseUser.getUid());
-                    User mUser = User.getInstance(mFirebaseUser.getUid());
+                    // Login 되었을 때
+                    userID = mFirebaseUser.getUid();
+                    mUser = User.getInstance(userID);
+                    Log.d(TAG, "LogIn : " + userID);
 
                     // TODO: 2017. 4. 7. UserNetwork는 비동기적으로 작동한다 그래서 체크하는 코드 추가!
-                    UserNetwork.getDataFromFirebase(mUser.getUserId());
-                    while(true) {
-                        // 비동기 코드를 동기화, 좀 더 효율적으로 바꿔야함..
-                        if(UserNetwork.GET_FIREBASE_DATA) {
-                            if(mUser.getAge() != null) {
-                                if(mUser.getAge().length() > 0) {
-                                    Log.d(TAG, "User Info Exist : " + mUser.getUserName());
+                    UserNetwork.sDatabase.child(UserNetwork.FIREBASE_USERS).child(userID).addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User user = dataSnapshot.getValue(User.class); //임시 User객체
+                                    String userName = user.getUserName();
+                                    String email = user.getUserEmail();
+                                    String age = user.getAge();
+                                    String followers = user.getFollowers();
+                                    String followings = user.getFollowings();
 
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Log.d(TAG, "User Info Not Fully Exist : " + mUser.getUserName());
+                                    mUser.copyInfo(user);
+                                    Log.d(TAG, "userName : " + User.getInstance(userID).getUserName());
 
-                                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    // 비동기 코드를 동기화, 좀 더 효율적으로 바꿔야함..
+                                    if (mUser.getAge() != null) {
+                                        if (mUser.getAge().length() > 0) {
+                                            Log.d(TAG, "User Info Exist : " + mUser.getUserName());
+
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            Log.d(TAG, "User Info Not Fully Exist : " + mUser.getUserName());
+
+                                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    } else {
+                                        Log.d(TAG, "User Info Not Exist");
+                                        getUserInfoFromFacebook();
+
+                                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
                                 }
-                            } else {
-                                Log.d(TAG, "User Info Not Exist");
-                                getUserInfoFromFacebook();
 
-                                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                                startActivity(intent);
-                                finish();
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                                }
                             }
-
-                            break;
-                        }
-                    }
+                    );
                 }
                 else {
+                    // Logout 되었을 때
+                    setContentView(R.layout.activity_login);
                     Log.d(TAG, "LogOut");
+
+                    mSigninFacebookButton = (LoginButton) findViewById(R.id.sign_in_facebook_button);
+                    mSigninFacebookButton.setReadPermissions("email", "public_profile");
+                    mSigninFacebookButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            mAccessToken = loginResult.getAccessToken();
+                            AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
+                            Log.d(TAG, "Facebook Login Success " + mAccessToken.getToken());
+
+                            getUserInfoFromFacebook();
+
+                            Log.d(TAG, "UserToken : " + mAccessToken.getToken());
+                            mFirebaseAuth.signInWithCredential(credential);
+
+                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            Log.d(TAG, "Facebook login canceled.");
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+                            Log.d(TAG, "Facebook Login Error", error);
+                        }
+                    });
                 }
             }
         };
-
-        setContentView(R.layout.activity_login);
-
-        mSigninFacebookButton = (LoginButton) findViewById(R.id.sign_in_facebook_button);
-        mSigninFacebookButton.setReadPermissions("email", "public_profile");
-        mSigninFacebookButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                mAccessToken = loginResult.getAccessToken();
-                AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
-                Log.d(TAG, "Facebook Login Success " + mAccessToken.getToken());
-
-                getUserInfoFromFacebook();
-
-                Log.d(TAG, "UserToken : " + mAccessToken.getToken());
-                mFirebaseAuth.signInWithCredential(credential);
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "Facebook login canceled.");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "Facebook Login Error", error);
-            }
-        });
     }
 
     public void getUserInfoFromFacebook() {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <Button
+        android:id="@+id/sign_out_facebook_button"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:text="로그아웃하기"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:background="#3b5998"/>
+</LinearLayout>

@@ -49,11 +49,11 @@ public class RegisterActivity extends BaseActivity {
                     mUser.setUserName(userNameEdit.getText().toString());
                     mUser.setUserEmail(emailEdit.getText().toString());
                     mUser.setAge(ageEdit.getText().toString());
-                    String nullString = "";
+                    Log.d("RegisterActivity", "User Id : " + mUser.getUserId());
 
                     // 파이어베이스에 저장
                     UserNetwork.setUserToFirebase(mUser.getUserId(), mUser.getUserName(), mUser.getUserEmail(),
-                            mUser.getAge(), nullString, nullString);
+                            mUser.getAge(), "", "");
 
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(intent);

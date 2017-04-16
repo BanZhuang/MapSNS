@@ -10,7 +10,7 @@ public class User {
     // userName, age, profile, follower, following, latitude, longitude
     private static User sUser; //User 객체를 싱글톤으로 사용
 
-    private static String sUserId;  // Facebook ID
+    private String sUserId;  // Facebook ID
     private String mUserName;
 
     private String mUserEmail;
@@ -20,6 +20,7 @@ public class User {
     private double Latitude;
     private double Longitude;
 
+    private User() {}
     private User(String userId) {
         sUserId = userId;
     }
@@ -34,6 +35,14 @@ public class User {
         }
         return sUser;
     }
+    public void copyInfo(User user) {
+        this.mUserName = user.mUserName;
+        this.mUserEmail = user.mUserEmail;
+        this.mAge = user.mAge;
+        this.mFollowers = user.mFollowers;
+        this.mFollowings = user.mFollowings;
+    }
+
     public String getUserId() { return sUserId; }
 
     public String getUserName() {
