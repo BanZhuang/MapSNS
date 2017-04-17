@@ -1,5 +1,7 @@
 package com.jiwoon.tgwing.mapsns.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -10,13 +12,13 @@ public class User {
     // userName, age, profile, follower, following, latitude, longitude
     private static User sUser; //User 객체를 싱글톤으로 사용
 
-    private String sUserId;  // Facebook ID
+    private static String sUserId;  // Facebook ID
     private String mUserName;
 
     private String mUserEmail;
     private String mAge;
-    private String mFollowers;
-    private String mFollowings;
+    private List<String> mFollowers = new ArrayList<>();
+    private List<String> mFollowings = new ArrayList<>();
     private double Latitude;
     private double Longitude;
 
@@ -35,12 +37,17 @@ public class User {
         }
         return sUser;
     }
+    // 객체정보 복사하기
     public void copyInfo(User user) {
         this.mUserName = user.mUserName;
         this.mUserEmail = user.mUserEmail;
         this.mAge = user.mAge;
         this.mFollowers = user.mFollowers;
         this.mFollowings = user.mFollowings;
+    }
+
+    public void setUserInfo(String userName, String userEmail, String age, List<String> followers, List<String> followings) {
+        mUserName = userName; mUserEmail = userEmail; mAge = age; mFollowers = followers; mFollowings = followings;
     }
 
     public String getUserId() { return sUserId; }
@@ -66,17 +73,17 @@ public class User {
         mAge = age;
     }
 
-    public String getFollowers() {
+    public List<String> getFollowers() {
         return mFollowers;
     }
-    public void setFollowers(String followers) {
+    public void setFollowers(List<String> followers) {
         mFollowers = followers;
     }
 
-    public String getFollowings() {
+    public List<String> getFollowings() {
         return mFollowings;
     }
-    public void setFollowings(String followings) {
+    public void setFollowings(List<String> followings) {
         mFollowings = followings;
     }
 
@@ -92,10 +99,6 @@ public class User {
     }
     public void setLongitude(double longitude) {
         Longitude = longitude;
-    }
-
-    public void setUserInfo(String userName, String userEmail, String age, String followers, String followings) {
-        mUserName = userName; mUserEmail = userEmail; mAge = age; mFollowers = followers; mFollowings = followings;
     }
 
     // 싱글톤 날리기

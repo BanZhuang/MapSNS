@@ -4,25 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +24,9 @@ import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.User;
 import com.jiwoon.tgwing.mapsns.networking.UserNetwork;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by jiwoonwon on 2017. 3. 27..
@@ -73,8 +65,8 @@ public class LoginActivity extends BaseActivity {
                     mUser = User.getInstance(userID);
                     Log.d(TAG, "LogIn : " + userID);
 
-                    // TODO: 2017. 4. 7. UserNetwork는 비동기적으로 작동한다 그래서 체크하는 코드 추가!
-                    UserNetwork.sDatabase.child(UserNetwork.FIREBASE_USERS).child(userID).addListenerForSingleValueEvent(
+                    // FIREBASE에서 데이터 가져오기
+                    UserNetwork.userReference.child(userID).addListenerForSingleValueEvent(
                             new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,8 +74,8 @@ public class LoginActivity extends BaseActivity {
                                     String userName = user.getUserName();
                                     String email = user.getUserEmail();
                                     String age = user.getAge();
-                                    String followers = user.getFollowers();
-                                    String followings = user.getFollowings();
+                                    List<String> followers = user.getFollowers();
+                                    List<String> followings = user.getFollowings();
 
                                     mUser.copyInfo(user);
                                     Log.d(TAG, "userName : " + User.getInstance(userID).getUserName());
@@ -168,13 +160,13 @@ public class LoginActivity extends BaseActivity {
                 try {
                     //sUser에 id값 저장, 객체 선언
                     User mUser = User.getInstance(mFirebaseUser.getUid());
-                    mUser.setUserName(object.getString("name"));    // 이름
-                    mUser.setUserEmail(object.getString("email"));  // 이메일
+                    String userName = object.getString("name");    // 이름
+                    String userEmail = object.getString("email");  // 이메일
 
                     Log.d(TAG, "facebook login > " + "id: " + mUser.getUserId() +
-                            ", name: " + mUser.getUserName() + ", email: " + mUser.getUserEmail());
+                            ", name: " + userName + ", email: " + userEmail);
                     //Firebase에 데이터 저장
-                    UserNetwork.setUserToFirebase(mFirebaseUser.getUid(), mUser.getUserName(), mUser.getUserEmail());
+                    UserNetwork.addUserToFirebase(mFirebaseUser.getUid(), userName, userEmail);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

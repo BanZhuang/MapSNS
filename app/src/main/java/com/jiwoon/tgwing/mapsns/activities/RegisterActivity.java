@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +11,9 @@ import android.widget.Toast;
 import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.User;
 import com.jiwoon.tgwing.mapsns.networking.UserNetwork;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jiwoonwon on 2017. 4. 3..
@@ -46,14 +48,16 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(ageEdit.getText().toString().length() > 0) {
-                    mUser.setUserName(userNameEdit.getText().toString());
-                    mUser.setUserEmail(emailEdit.getText().toString());
-                    mUser.setAge(ageEdit.getText().toString());
+                    String userName = userNameEdit.getText().toString();
+                    String userEmail = emailEdit.getText().toString();
+                    String age = ageEdit.getText().toString();
                     Log.d("RegisterActivity", "User Id : " + mUser.getUserId());
 
+                    List<String> nullString = new ArrayList<String>();
+                    nullString.add("");
                     // 파이어베이스에 저장
-                    UserNetwork.setUserToFirebase(mUser.getUserId(), mUser.getUserName(), mUser.getUserEmail(),
-                            mUser.getAge(), "", "");
+                    UserNetwork.updateUserToFirebase(mUser.getUserId(), userName, userEmail,
+                            age, nullString, nullString);
 
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(intent);

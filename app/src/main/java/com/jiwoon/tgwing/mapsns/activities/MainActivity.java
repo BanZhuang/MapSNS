@@ -15,9 +15,10 @@ import com.jiwoon.tgwing.mapsns.fragments.ProfileFragment;
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
+    public static final String CUR_FRAGMENT = "curFragment";
 
-    private static final String MAP_FRAGMENT = "MapFragment";
-    private static final String CREATE_MEMO_FRAGMENT = "CreateMemoFragment";
+    public static final String MAP_FRAGMENT = "MapFragment";
+    public static final String CREATE_MEMO_FRAGMENT = "CreateMemoFragment";
     private static final String PROFILE_FRAGMENT = "ProfileFragment";
 
     public ImageView buttonNavigationMap;
@@ -44,6 +45,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(!curFragment.equals(MAP_FRAGMENT)) {
+                    // 현 상태가 MAP_FRAGMENT임을 전달
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CUR_FRAGMENT, MAP_FRAGMENT);
+                    mapFragment.setArguments(bundle);
+
                     // 프레그먼트 교체하기
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, mapFragment)
@@ -64,7 +70,24 @@ public class MainActivity extends BaseActivity {
         buttonCreateMemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //CreateMemo Fragment를 따로 만들기 보단 MapFragment를 불러다 메모를 생성하는 창을 띄워주자
+                // 현 상태가 CREATE_MEMO_FRAGMENT임을 전달
+                Bundle bundle = new Bundle();
+                bundle.putString(CUR_FRAGMENT, CREATE_MEMO_FRAGMENT);
+                mapFragment.setArguments(bundle);
 
+                // TODO: 2017. 4. 17. 현 프레그먼트가 MapFragment일때 Replace 말고 Bundle만 전달하여 MapFragment에서 이를 들을 수 있게 코드수정
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, mapFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+                curFragment = MAP_FRAGMENT;
+
+                // 백그라운드 날려버리기
+                if(fragmentManager.getBackStackEntryCount() > 1) {
+                    fragmentManager.popBackStack();
+                    Log.d(TAG, "background popped");
+                }
             }
         });
 

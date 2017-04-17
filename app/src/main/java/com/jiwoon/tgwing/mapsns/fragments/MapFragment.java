@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.jiwoon.tgwing.mapsns.R;
+import com.jiwoon.tgwing.mapsns.activities.MainActivity;
 import com.jiwoon.tgwing.mapsns.models.User;
 
 import net.daum.mf.map.api.MapCurrentLocationMarker;
@@ -140,6 +141,12 @@ public class MapFragment extends Fragment {
                 .setDeniedCloseButtonText("위치 접근권한을 거부하시면 서비스를 이용할 수 없습니다.\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
+
+        String curFragment = getArguments().getString(MainActivity.CUR_FRAGMENT); //Bundle값 가져오기
+        // TODO: 2017. 4. 17. curFragment값 처리하기
+        if(curFragment == MainActivity.CREATE_MEMO_FRAGMENT) {
+
+        }
 
         buttonCurrentLocation = (ImageView) view.findViewById(R.id.fragment_map_current_location);
         buttonCurrentLocation.setOnClickListener(new View.OnClickListener() {
