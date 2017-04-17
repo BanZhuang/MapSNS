@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.jiwoon.tgwing.mapsns.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +36,9 @@ public class UserNetwork extends DatabaseNetwork {
     // Facebook
     public static void addUserToFirebase(String userID, String userName, String email) {
         User user = User.getInstance(userID);
-        user.setUserInfo(userName, email, null, null, null);
+        List<String> nullString = new ArrayList<String>();
+        nullString.add("");
+        user.setUserInfo(userName, email, "", nullString, nullString);
 
         userReference.child(userID).setValue(user);
 

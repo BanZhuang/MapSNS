@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity {
     public ImageView buttonCreateMemo;
     public ImageView buttonProfile;
 
-    private String curFragment;
+    public static String curFragment;
 
     private MapFragment mapFragment;
     private ProfileFragment profileFragment;
@@ -44,19 +44,12 @@ public class MainActivity extends BaseActivity {
         buttonNavigationMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!curFragment.equals(MAP_FRAGMENT)) {
-                    // 현 상태가 MAP_FRAGMENT임을 전달
-                    Bundle bundle = new Bundle();
-                    bundle.putString(CUR_FRAGMENT, MAP_FRAGMENT);
-                    mapFragment.setArguments(bundle);
-
-                    // 프레그먼트 교체하기
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, mapFragment)
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .commit();
-                    curFragment = MAP_FRAGMENT;
-                }
+                if(!curFragment.equals(MAP_FRAGMENT))
+                    replaceFragment(MAP_FRAGMENT);
+                // 하단 네비게이션 이미지 교체
+                buttonNavigationMap.setImageResource(R.drawable.menu_home_checked);
+                buttonCreateMemo.setImageResource(R.drawable.menu_create_memo_empty);
+                buttonProfile.setImageResource(R.drawable.menu_profile_empty);
 
                 // 백그라운드 날려버리기
                 if(fragmentManager.getBackStackEntryCount() > 1) {
@@ -71,17 +64,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //CreateMemo Fragment를 따로 만들기 보단 MapFragment를 불러다 메모를 생성하는 창을 띄워주자
-                // 현 상태가 CREATE_MEMO_FRAGMENT임을 전달
-                Bundle bundle = new Bundle();
-                bundle.putString(CUR_FRAGMENT, CREATE_MEMO_FRAGMENT);
-                mapFragment.setArguments(bundle);
-
-                // TODO: 2017. 4. 17. 현 프레그먼트가 MapFragment일때 Replace 말고 Bundle만 전달하여 MapFragment에서 이를 들을 수 있게 코드수정
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, mapFragment)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .commit();
-                curFragment = MAP_FRAGMENT;
+                if(!curFragment.equals(CREATE_MEMO_FRAGMENT))
+                    replaceFragment(CREATE_MEMO_FRAGMENT);
+                // 하단 네비게이션 이미지 교체
+                buttonNavigationMap.setImageResource(R.drawable.menu_home_empty);
+                buttonCreateMemo.setImageResource(R.drawable.menu_create_memo_checked);
+                buttonProfile.setImageResource(R.drawable.menu_profile_empty);
 
                 // 백그라운드 날려버리기
                 if(fragmentManager.getBackStackEntryCount() > 1) {
@@ -103,6 +91,10 @@ public class MainActivity extends BaseActivity {
                             .commit();
                     curFragment = PROFILE_FRAGMENT;
                 }
+                // 하단 네비게이션 이미지 교체
+                buttonNavigationMap.setImageResource(R.drawable.menu_home_empty);
+                buttonCreateMemo.setImageResource(R.drawable.menu_create_memo_empty);
+                buttonProfile.setImageResource(R.drawable.menu_profile_checked);
 
                 // 백그라운드 날려버리기
                 if(fragmentManager.getBackStackEntryCount() > 1) {
@@ -114,9 +106,27 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initFragment() {
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container,mapFragment).commit();
-        // TODO: 2017. 3. 22. 다른 프래그먼트도 이니셜라이즈 하고 한번만 생성하고 사용하게 버튼누를때마다 생성하면 x.
+//        Bundle bundle = new Bundle();
+//        bundle.putString(CUR_FRAGMENT, MAP_FRAGMENT);
+//        mapFragment.setArguments(bundle);
         curFragment = MAP_FRAGMENT;
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.fragment_container,mapFragment).commit();
+    }
+
+    private void replaceFragment(String fragment) {
+        // TODO: 2017. 4. 17. Fragment가 이미 띄워져있는 상황에서 Bundle을 어떻게 전달할지 고민!
+//        // 현 상태가 fragment임을 전달
+//        Bundle bundle = new Bundle();
+//        bundle.putString(CUR_FRAGMENT, fragment);
+//        mapFragment.setArguments(bundle);
+        curFragment = fragment;
+
+        // TODO: 2017. 4. 17. 현 프레그먼트가 MapFragment일때 Replace 말고 Bundle만 전달하여 MapFragment에서 이를 들을 수 있게 코드수정
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, mapFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 }

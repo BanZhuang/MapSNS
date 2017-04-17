@@ -28,13 +28,14 @@ public class StorageNetwork {
     private static final String STORAGE_USERS = "uesrs";
     private static final String STORAGE_MEMOS = "memos";
 
-    public static void uploadProfileImage(String userID, String fileName, ImageView profileImage) {
-        StorageReference profileRef = sReference.child(STORAGE_USERS + "/" + userID  + "/" + fileName);
+    public static final String IMAGE_SIZE_ORIGINAL = "original";
+    public static final String IMAGE_SIZE_COMPRESSED = "compressed";
+
+    public static void uploadProfileImage(String userID, String fileSize, Bitmap profileImage) {
+        StorageReference profileRef = sReference.child(STORAGE_USERS + "/" + userID  + "/" + fileSize);
 
         // Firebase Storage에 올릴 수 있도록 profileImage 변환
-        profileImage.setDrawingCacheEnabled(true);
-        profileImage.buildDrawingCache();
-        Bitmap bitmap = profileImage.getDrawingCache();
+        Bitmap bitmap = profileImage;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
@@ -61,9 +62,9 @@ public class StorageNetwork {
         });
     }
 
-    public static void downloadProfileImage(String userID, String filename, final ImageView profileImage) {
-        StorageReference islandRef = sReference.child(STORAGE_USERS + "/" + userID + "/" + filename);
-        final long ONE_MEGABYTE = 400 * 400;
+    public static void downloadProfileImage(String userID, String fileSize, final ImageView profileImage) {
+        StorageReference islandRef = sReference.child(STORAGE_USERS + "/" + userID + "/" + fileSize);
+        final long ONE_MEGABYTE = 1024 * 1024;
         islandRef.getBytes(ONE_MEGABYTE)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override

@@ -1,6 +1,8 @@
 package com.jiwoon.tgwing.mapsns.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -22,10 +24,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.jiwoon.tgwing.mapsns.R;
 import com.jiwoon.tgwing.mapsns.models.User;
+import com.jiwoon.tgwing.mapsns.networking.StorageNetwork;
 import com.jiwoon.tgwing.mapsns.networking.UserNetwork;
 
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -67,49 +71,53 @@ public class LoginActivity extends BaseActivity {
 
                     // FIREBASE에서 데이터 가져오기
                     UserNetwork.userReference.child(userID).addListenerForSingleValueEvent(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User user = dataSnapshot.getValue(User.class); //임시 User객체
-                                    String userName = user.getUserName();
-                                    String email = user.getUserEmail();
-                                    String age = user.getAge();
-                                    List<String> followers = user.getFollowers();
-                                    List<String> followings = user.getFollowings();
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                User user = dataSnapshot.getValue(User.class); //임시 User객체
+
+                                if(user == null) {
+                                    Log.d(TAG, "User Info Not Exist");
+                                    getUserInfoFromFacebook();
+
+                                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    String userName = user.getUserName();   //이름
+                                    String email = user.getUserEmail();     //이메일
+                                    try {
+                                        String age = user.getAge();         //나이
+                                        List<String> followers = user.getFollowers();   //팔로워
+                                        List<String> followings = user.getFollowings(); //팔로잉
+                                    } catch (Exception e) {
+                                        Log.e(TAG, e.getMessage());
+                                    }
 
                                     mUser.copyInfo(user);
                                     Log.d(TAG, "userName : " + User.getInstance(userID).getUserName());
 
-                                    // 비동기 코드를 동기화, 좀 더 효율적으로 바꿔야함..
                                     if (mUser.getAge() != null) {
-                                        if (mUser.getAge().length() > 0) {
-                                            Log.d(TAG, "User Info Exist : " + mUser.getUserName());
+                                        Log.d(TAG, "User Info Exist : " + mUser.getUserName());
 
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        } else {
-                                            Log.d(TAG, "User Info Not Fully Exist : " + mUser.getUserName());
-
-                                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
                                     } else {
-                                        Log.d(TAG, "User Info Not Exist");
-                                        getUserInfoFromFacebook();
+                                        Log.d(TAG, "User Info Not Fully Exist : " + mUser.getUserName());
 
                                         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                                         startActivity(intent);
                                         finish();
                                     }
                                 }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                                }
                             }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                            }
+                        }
                     );
                 }
                 else {
@@ -162,6 +170,15 @@ public class LoginActivity extends BaseActivity {
                     User mUser = User.getInstance(mFirebaseUser.getUid());
                     String userName = object.getString("name");    // 이름
                     String userEmail = object.getString("email");  // 이메일
+                    // 프로필 이미지
+                    if(object.has("picture")) {
+                        String profileURL = object.getJSONObject("picture").getJSONObject("data").getString("url"); //사진 URL
+                        Log.d(TAG, "profile URL : " + profileURL);
+                        URL url = new URL(profileURL);
+
+                        Bitmap profilePic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        StorageNetwork.uploadProfileImage(mFirebaseUser.getUid(), StorageNetwork.IMAGE_SIZE_ORIGINAL, profilePic);
+                    }
 
                     Log.d(TAG, "facebook login > " + "id: " + mUser.getUserId() +
                             ", name: " + userName + ", email: " + userEmail);

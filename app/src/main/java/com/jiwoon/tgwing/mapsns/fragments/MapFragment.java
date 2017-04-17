@@ -142,10 +142,13 @@ public class MapFragment extends Fragment {
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
 
-        String curFragment = getArguments().getString(MainActivity.CUR_FRAGMENT); //Bundle값 가져오기
+        //String curFragment = getArguments().getString(MainActivity.CUR_FRAGMENT); //Bundle값 가져오기
+        String curFragment = MainActivity.curFragment;
         // TODO: 2017. 4. 17. curFragment값 처리하기
         if(curFragment == MainActivity.CREATE_MEMO_FRAGMENT) {
-
+            Log.d(TAG, "Fragment choosed : "+ curFragment);
+        } else {
+            Log.d(TAG, "Fragment choosed : "+ curFragment);
         }
 
         buttonCurrentLocation = (ImageView) view.findViewById(R.id.fragment_map_current_location);
