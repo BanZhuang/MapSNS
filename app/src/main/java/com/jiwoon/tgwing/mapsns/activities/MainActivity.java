@@ -1,7 +1,6 @@
 package com.jiwoon.tgwing.mapsns.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -15,8 +14,6 @@ import com.jiwoon.tgwing.mapsns.fragments.ProfileFragment;
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
-    public static final String CUR_FRAGMENT = "curFragment";
-
     public static final String MAP_FRAGMENT = "MapFragment";
     public static final String CREATE_MEMO_FRAGMENT = "CreateMemoFragment";
     private static final String PROFILE_FRAGMENT = "ProfileFragment";
@@ -25,7 +22,7 @@ public class MainActivity extends BaseActivity {
     public ImageView buttonCreateMemo;
     public ImageView buttonProfile;
 
-    public static String curFragment;
+    public static String curFragment;   //현재 프래그먼트가 뭔지 알려주는 인자
 
     private MapFragment mapFragment;
     private ProfileFragment profileFragment;
@@ -106,9 +103,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initFragment() {
-//        Bundle bundle = new Bundle();
-//        bundle.putString(CUR_FRAGMENT, MAP_FRAGMENT);
-//        mapFragment.setArguments(bundle);
         curFragment = MAP_FRAGMENT;
 
         fragmentManager = getSupportFragmentManager();
@@ -116,11 +110,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void replaceFragment(String fragment) {
-        // TODO: 2017. 4. 17. Fragment가 이미 띄워져있는 상황에서 Bundle을 어떻게 전달할지 고민!
-//        // 현 상태가 fragment임을 전달
-//        Bundle bundle = new Bundle();
-//        bundle.putString(CUR_FRAGMENT, fragment);
-//        mapFragment.setArguments(bundle);
         curFragment = fragment;
 
         // TODO: 2017. 4. 17. 현 프레그먼트가 MapFragment일때 Replace 말고 Bundle만 전달하여 MapFragment에서 이를 들을 수 있게 코드수정

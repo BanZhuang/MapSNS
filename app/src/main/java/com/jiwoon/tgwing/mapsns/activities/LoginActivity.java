@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity {
                                     mUser.copyInfo(user);
                                     Log.d(TAG, "userName : " + User.getInstance(userID).getUserName());
 
-                                    if (mUser.getAge() != null) {
+                                    if (mUser.getAge().length() > 0) {
                                         Log.d(TAG, "User Info Exist : " + mUser.getUserName());
 
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -171,6 +171,7 @@ public class LoginActivity extends BaseActivity {
                     String userName = object.getString("name");    // 이름
                     String userEmail = object.getString("email");  // 이메일
                     // 프로필 이미지
+                    // TODO: 2017. 4. 17. 여기를 안거치고 통과함...!
                     if(object.has("picture")) {
                         String profileURL = object.getJSONObject("picture").getJSONObject("data").getString("url"); //사진 URL
                         Log.d(TAG, "profile URL : " + profileURL);
@@ -190,8 +191,9 @@ public class LoginActivity extends BaseActivity {
             }
         });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email");
+        parameters.putString("fields", "id,name,email,picture.width(150).height(150)");
         request.setParameters(parameters);
+
 
         new Thread(new Runnable() {
             @Override

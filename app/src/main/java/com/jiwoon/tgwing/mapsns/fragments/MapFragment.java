@@ -205,10 +205,12 @@ public class MapFragment extends Fragment {
         currentLocationMarker.setCustomImageResourceId(R.drawable.icon_current_location);
         currentLocationMarker.setCustomImageAnchorPointOffset(new MapPOIItem.ImageOffset(36,39));
 
+        daumMap.setShowCurrentLocationMarker(true);
         daumMap.setCustomCurrentLocationMarkerTrackingImage(currentLocationMarker.getCustomImageResourceId(),
                 currentLocationMarker.getCustomImageAnchorPointOffset());
         daumMap.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
-        daumMap.setShowCurrentLocationMarker(true);
+
+
 
         setCurrentLocation(mUser.getLatitude(), mUser.getLongitude());
     }
